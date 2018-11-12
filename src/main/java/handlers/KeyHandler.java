@@ -5,17 +5,22 @@ import spark.Response;
 import spark.Route;
 import org.json.JSONObject;
 import configs.Database;
-import models.User;
 import models.UserKey;
-import models.UserState;
-import models.VWUserStateSystem;
 
 public class KeyHandler{
   public static Route activationKeyValidate = (Request request, Response response) -> {
     String rpta = "";
     Database db = new Database();
     try {
-
+      String userId = request.queryParams("user_id");
+      int activationKey = Integer.parseInt(request.queryParams("activation_key"));
+      db.open();
+      UserKey s = UserKey.findFirst("user_id = ? AND activation = ?", userId, activationKey);
+      if (s == null){
+        rpta = "0";
+      }else{
+        rpta = "1";
+      }
     }catch (Exception e) {
       String[] error = {"It was not possible to validate the activation key.", e.toString()};
       JSONObject rptaTry = new JSONObject();
