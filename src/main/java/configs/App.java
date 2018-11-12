@@ -6,7 +6,9 @@ import static spark.Spark.port;
 import static spark.Spark.options;
 import static spark.Spark.before;
 import static spark.Spark.get;
+import static spark.Spark.post;
 import configs.FilterHandler;
+import handlers.UserHandler;
 import handlers.UserStateHandler;
 
 public class App {
@@ -42,5 +44,9 @@ public class App {
 		//-user_state
 		get("/user_state/list", UserStateHandler.list);
 		get("/user_state/get/:id", UserStateHandler.get);
+		//-user
+		post("/user/create", UserHandler.create);
+		post("/user/system/validate", UserHandler.userPassSystemValidate);
+		get("/user/get_id_by_user", UserHandler.getIdByUser);
   }
 }

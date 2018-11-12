@@ -90,4 +90,31 @@ public class UserHandler{
     }
     return rpta;
   };
+
+  public static Route getIdByUser = (Request request, Response response) -> {
+    String rpta = "";
+    Database db = new Database();
+    try {
+      String user = request.queryParams("user");
+      User s = User.findFirst("user = ?", user);
+      if (s == null){
+        rpta = "0";
+      }else{
+        rpta = s.get("id") + "";
+      }
+    }catch (Exception e) {
+      String[] error = {"An error occurred while getting the user", e.toString()};
+      JSONObject rptaTry = new JSONObject();
+      rptaTry.put("tipo_mensaje", "error");
+      rptaTry.put("mensaje", error);
+      rpta = rptaTry.toString();
+      response.status(500);
+    } finally {
+      if(db.getDb().hasConnection()){
+        //TODO eliminar usuario_sistema y key en caso de error
+  	    db.close();
+  	  }
+    }
+    return rpta;
+  };
 }
