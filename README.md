@@ -1,9 +1,5 @@
 # Static File Server Boilerplate Java Spark
 
-Crear proyecto con Maven
-
-    $ mvn archetype:generate -DgroupId=pe.softweb -DartifactId=lite -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
-
 Ubicación de los archivos estáticos:
 
     src/main/resources/public
