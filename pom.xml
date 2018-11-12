@@ -52,6 +52,20 @@
   <build>
     <finalName>access</finalName>
     <plugins>
+      <!-- Instrumentacion para usar JavaLite -->
+      <plugin>
+        <groupId>org.javalite</groupId>
+        <artifactId>activejdbc-instrumentation</artifactId>
+        <version>1.4.13</version>
+        <executions>
+          <execution>
+            <phase>process-classes</phase>
+              <goals>
+                <goal>instrument</goal>
+              </goals>
+          </execution>
+        </executions>
+      </plugin>
       <!-- Usar JDK8, soporta lamdas-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
