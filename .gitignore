@@ -17,3 +17,5 @@ src/main/resources/public/dist
 package-lock.json
 
 Gemfile.lock
+
+.vscode/
