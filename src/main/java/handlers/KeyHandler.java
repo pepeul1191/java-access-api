@@ -12,8 +12,8 @@ public class KeyHandler{
     String rpta = "";
     Database db = new Database();
     try {
-      String userId = request.queryParams("user_id");
-      int activationKey = Integer.parseInt(request.queryParams("activation_key"));
+      int userId = Integer.parseInt(request.queryParams("user_id"));
+      String activationKey = request.queryParams("activation_key");
       db.open();
       UserKey s = UserKey.findFirst("user_id = ? AND activation = ?", userId, activationKey);
       if (s == null){
@@ -40,7 +40,15 @@ public class KeyHandler{
     String rpta = "";
     Database db = new Database();
     try {
-
+      int userId = Integer.parseInt(request.queryParams("user_id"));
+      String resetKey = request.queryParams("reset_key");
+      db.open();
+      UserKey s = UserKey.findFirst("user_id = ? AND reset = ?", userId, resetKey);
+      if (s == null){
+        rpta = "0";
+      }else{
+        rpta = "1";
+      }
     }catch (Exception e) {
       String[] error = {"It was not possible to validate the reset key.", e.toString()};
       JSONObject rptaTry = new JSONObject();
