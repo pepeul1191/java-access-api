@@ -46,10 +46,12 @@ public class App {
 		get("/user_state/get/:id", UserStateHandler.get);
 		//-user
 		post("/user/create", UserHandler.create);
-		post("/user/system/validate", UserHandler.userPassSystemValidate);
+		get("/user/get/:id", UserHandler.get);
 		get("/user/get_id_by_user", UserHandler.getIdByUser);
 		post("/user/update_state", UserHandler.updateState);
 		post("/user/update_pass", UserHandler.updatePass);
 		post("/user/delete/:id", UserHandler.delete);
+		post("/user/system/validate", UserHandler.userPassSystemValidate);
+		post("/user/update", UserHandler.update);
   }
 }

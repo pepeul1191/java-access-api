@@ -202,4 +202,34 @@ public class UserHandler{
     return rpta;
   };
 
+  public static Route get = (Request request, Response response) -> {
+    String rpta = "";
+    Database db = new Database();
+    try {
+      int userId = Integer.parseInt(request.queryParams("id"));
+      db.open();
+      User s = User.findFirst("id = ?", userId);
+      if (s == null){
+        rpta = "not_found";
+      }else{
+        JSONObject temp = new JSONObject();
+        temp.put("user", s.get("user"));
+        temp.put("email", s.get("email"));
+        temp.put("state_id", s.get("user_state_id"));
+        rpta = temp.toString();
+      }
+    }catch (Exception e) {
+      String[] error = {"An error occurred while getting the user", e.toString()};
+      JSONObject rptaTry = new JSONObject();
+      rptaTry.put("tipo_mensaje", "error");
+      rptaTry.put("mensaje", error);
+      rpta = rptaTry.toString();
+      response.status(500);
+    } finally {
+      if(db.getDb().hasConnection()){
+        db.close();
+      }
+    }
+    return rpta;
+  };
 }
