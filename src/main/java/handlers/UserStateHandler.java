@@ -38,4 +38,27 @@ public class UserStateHandler{
     }
     return rpta;
   };
+
+  public static Route get = (Request request, Response response) -> {
+    String rpta = "";
+    Database db = new Database();
+    try {
+      int id   = Integer.parseInt(request.params(":id"));
+      db.open();
+      UserState s = UserState.findFirst("id = ?", id);
+      rpta = s.getString("name");
+    }catch (Exception e) {
+      String[] error = {"It was not possible to get the user state.", e.toString()};
+      JSONObject rptaTry = new JSONObject();
+      rptaTry.put("tipo_mensaje", "error");
+      rptaTry.put("mensaje", error);
+      rpta = rptaTry.toString();
+      response.status(500);
+    } finally {
+      if(db.getDb().hasConnection()){
+  	    db.close();
+  	  }
+    }
+    return rpta;
+  };
 }

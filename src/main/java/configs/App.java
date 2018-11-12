@@ -41,5 +41,6 @@ public class App {
 		//ruta de servicios REST
 		//-user_state
 		get("/user_state/list", UserStateHandler.list);
+		get("/user_state/get/:id", UserStateHandler.get);
   }
 }
