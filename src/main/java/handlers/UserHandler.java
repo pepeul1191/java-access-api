@@ -111,9 +111,37 @@ public class UserHandler{
       response.status(500);
     } finally {
       if(db.getDb().hasConnection()){
-        //TODO eliminar usuario_sistema y key en caso de error
   	    db.close();
   	  }
+    }
+    return rpta;
+  };
+
+  public static Route updateState = (Request request, Response response) -> {
+    String rpta = "";
+    Database db = new Database();
+    try {
+      int userId = Integer.parseInt(request.queryParams("user_id"));
+      int userStateId = Integer.parseInt(request.queryParams("user_state_id"));
+      db.open();
+      User s = User.findFirst("id = ?", userId);
+      if (s == null){
+        rpta = "not_found";
+      }else{
+        s.set("user_state_id", userStateId);
+        s.saveIt();
+      }
+    }catch (Exception e) {
+      String[] error = {"An error occurred while creating the user", e.toString()};
+      JSONObject rptaTry = new JSONObject();
+      rptaTry.put("tipo_mensaje", "error");
+      rptaTry.put("mensaje", error);
+      rpta = rptaTry.toString();
+      response.status(500);
+    } finally {
+      if(db.getDb().hasConnection()){
+        db.close();
+      }
     }
     return rpta;
   };

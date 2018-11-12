@@ -48,5 +48,6 @@ public class App {
 		post("/user/create", UserHandler.create);
 		post("/user/system/validate", UserHandler.userPassSystemValidate);
 		get("/user/get_id_by_user", UserHandler.getIdByUser);
+		post("/user/update_state", UserHandler.updateState);	
   }
 }
