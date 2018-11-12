@@ -174,4 +174,32 @@ public class UserHandler{
     }
     return rpta;
   };
+
+  public static Route delete = (Request request, Response response) -> {
+    String rpta = "";
+    Database db = new Database();
+    try {
+      int userId = Integer.parseInt(request.queryParams("id"));
+      db.open();
+      User s = User.findFirst("id = ?", userId);
+      if (s == null){
+        rpta = "not_found";
+      }else{
+        s.delete();
+      }
+    }catch (Exception e) {
+      String[] error = {"An error occurred while deleting the user", e.toString()};
+      JSONObject rptaTry = new JSONObject();
+      rptaTry.put("tipo_mensaje", "error");
+      rptaTry.put("mensaje", error);
+      rpta = rptaTry.toString();
+      response.status(500);
+    } finally {
+      if(db.getDb().hasConnection()){
+        db.close();
+      }
+    }
+    return rpta;
+  };
+
 }
