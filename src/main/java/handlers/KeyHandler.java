@@ -78,7 +78,13 @@ public class KeyHandler{
         if(s2 == null){
           rpta = "user_key_not_found";
         }else{
-          s2.set("reset", org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40));
+          String key = org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40);
+          s2.set("reset", key);
+          s2.saveIt();
+          JSONObject temp = new JSONObject();
+          temp.put("user_id", s1.get("id"));
+          temp.put("reset_key", key);
+          rpta = temp.toString();
         }
       }
     }catch (Exception e) {
@@ -106,8 +112,10 @@ public class KeyHandler{
       if (s == null){
         rpta = "not_found";
       }else{
-        s.set("activation", org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40));
+        String key = org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40);
+        s.set("activation", key);
         s.saveIt();
+        rpta = key;
       }
     }catch (Exception e) {
       String[] error = {"It was not possible to update the activation user key", e.toString()};
@@ -134,8 +142,10 @@ public class KeyHandler{
       if (s == null){
         rpta = "not_found";
       }else{
-        s.set("reset", org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40));
+        String key = org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40);
+        s.set("reset", key);
         s.saveIt();
+        rpta = key;
       }
     }catch (Exception e) {
       String[] error = {"It was not possible to update the reset user key", e.toString()};
