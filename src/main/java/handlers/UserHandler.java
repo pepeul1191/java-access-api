@@ -132,7 +132,36 @@ public class UserHandler{
         s.saveIt();
       }
     }catch (Exception e) {
-      String[] error = {"An error occurred while creating the user", e.toString()};
+      String[] error = {"An error occurred while updating the user state", e.toString()};
+      JSONObject rptaTry = new JSONObject();
+      rptaTry.put("tipo_mensaje", "error");
+      rptaTry.put("mensaje", error);
+      rpta = rptaTry.toString();
+      response.status(500);
+    } finally {
+      if(db.getDb().hasConnection()){
+        db.close();
+      }
+    }
+    return rpta;
+  };
+
+  public static Route updatePass = (Request request, Response response) -> {
+    String rpta = "";
+    Database db = new Database();
+    try {
+      int userId = Integer.parseInt(request.queryParams("user_id"));
+      String pass = request.queryParams("pass");
+      db.open();
+      User s = User.findFirst("id = ?", userId);
+      if (s == null){
+        rpta = "not_found";
+      }else{
+        s.set("pass", pass);
+        s.saveIt();
+      }
+    }catch (Exception e) {
+      String[] error = {"An error occurred while updating the user password", e.toString()};
       JSONObject rptaTry = new JSONObject();
       rptaTry.put("tipo_mensaje", "error");
       rptaTry.put("mensaje", error);
