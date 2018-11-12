@@ -10,6 +10,7 @@ import static spark.Spark.post;
 import configs.FilterHandler;
 import handlers.UserHandler;
 import handlers.UserStateHandler;
+import handlers.KeyHandler;
 
 public class App {
   public static void main(String args[]){
