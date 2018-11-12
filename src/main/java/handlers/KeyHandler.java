@@ -68,14 +68,7 @@ public class KeyHandler{
     String rpta = "";
     Database db = new Database();
     try {
-      int userId = Integer.parseInt(request.queryParams("user_id"));
-      UserKey s = UserKey.findFirst("user_id = ?", userId);
-      if (s == null){
-        rpta = "not_found";
-      }else{
-        s.set("reset", org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40));
-        s.saveIt();
-      }
+      
     }catch (Exception e) {
       String[] error = {"It was not possible to reset update the reset user key", e.toString()};
       JSONObject rptaTry = new JSONObject();
@@ -95,9 +88,16 @@ public class KeyHandler{
     String rpta = "";
     Database db = new Database();
     try {
-
+      int userId = Integer.parseInt(request.queryParams("user_id"));
+      UserKey s = UserKey.findFirst("user_id = ?", userId);
+      if (s == null){
+        rpta = "not_found";
+      }else{
+        s.set("activation", org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40));
+        s.saveIt();
+      }
     }catch (Exception e) {
-      String[] error = {"It was not possible to update the activation key by user_id", e.toString()};
+      String[] error = {"It was not possible to update the activation user key", e.toString()};
       JSONObject rptaTry = new JSONObject();
       rptaTry.put("tipo_mensaje", "error");
       rptaTry.put("mensaje", error);
@@ -115,9 +115,16 @@ public class KeyHandler{
     String rpta = "";
     Database db = new Database();
     try {
-
+      int userId = Integer.parseInt(request.queryParams("user_id"));
+      UserKey s = UserKey.findFirst("user_id = ?", userId);
+      if (s == null){
+        rpta = "not_found";
+      }else{
+        s.set("reset", org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40));
+        s.saveIt();
+      }
     }catch (Exception e) {
-      String[] error = {"It was not possible to update the reset key by user_id.", e.toString()};
+      String[] error = {"It was not possible to update the reset user key", e.toString()};
       JSONObject rptaTry = new JSONObject();
       rptaTry.put("tipo_mensaje", "error");
       rptaTry.put("mensaje", error);
