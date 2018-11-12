@@ -53,5 +53,11 @@ public class App {
 		post("/user/delete/:id", UserHandler.delete);
 		post("/user/system/validate", UserHandler.userPassSystemValidate);
 		post("/user/update", UserHandler.update);
+		//-key
+		post("/key/activation/validate", KeyHandler.activationKeyValidate);
+		post("/key/reset/validate", KeyHandler.resetKeyValidate);
+		post("/key/reset_by_email", KeyHandler.resetByEmail);
+		post("/key/activation/update_by_user_id", KeyHandler.activationUpdateByUserId);
+		post("/key/reset/update_by_user_id", KeyHandler.resetUpdateByUserId);
   }
 }
