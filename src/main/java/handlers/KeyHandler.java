@@ -70,13 +70,16 @@ public class KeyHandler{
     Database db = new Database();
     try {
       String email = request.queryParams("email");
+      db.open();
       User s1 = User.findFirst("email = ?", email);
       if (s1 == null){
         rpta = "user_not_found";
+        response.status(404);
       }else{
         UserKey s2 = UserKey.findFirst("user_id = ?", s1.get("id"));
         if(s2 == null){
           rpta = "user_key_not_found";
+          response.status(404);
         }else{
           String key = org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40);
           s2.set("reset", key);
@@ -110,6 +113,7 @@ public class KeyHandler{
       db.open();
       UserKey s = UserKey.findFirst("user_id = ?", userId);
       if (s == null){
+        response.status(404);
         rpta = "not_found";
       }else{
         String key = org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40);
@@ -140,6 +144,7 @@ public class KeyHandler{
       db.open();
       UserKey s = UserKey.findFirst("user_id = ?", userId);
       if (s == null){
+        response.status(404);
         rpta = "not_found";
       }else{
         String key = org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40);

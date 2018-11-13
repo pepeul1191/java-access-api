@@ -96,6 +96,7 @@ public class UserHandler{
     Database db = new Database();
     try {
       String user = request.queryParams("user");
+      db.open();
       User s = User.findFirst("user = ?", user);
       if (s == null){
         rpta = "0";
@@ -103,6 +104,7 @@ public class UserHandler{
         rpta = s.get("id") + "";
       }
     }catch (Exception e) {
+      e.printStackTrace();
       String[] error = {"An error occurred while getting the user", e.toString()};
       JSONObject rptaTry = new JSONObject();
       rptaTry.put("tipo_mensaje", "error");
@@ -206,7 +208,7 @@ public class UserHandler{
     String rpta = "";
     Database db = new Database();
     try {
-      int userId = Integer.parseInt(request.queryParams("id"));
+      int userId = Integer.parseInt(request.params("id"));
       db.open();
       User s = User.findFirst("id = ?", userId);
       if (s == null){
@@ -219,6 +221,7 @@ public class UserHandler{
         rpta = temp.toString();
       }
     }catch (Exception e) {
+      e.printStackTrace();
       String[] error = {"An error occurred while getting the user", e.toString()};
       JSONObject rptaTry = new JSONObject();
       rptaTry.put("tipo_mensaje", "error");
