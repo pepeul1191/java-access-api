@@ -8,6 +8,7 @@ import configs.Database;
 import models.User;
 import models.UserKey;
 import models.UserState;
+import models.UserSystem;
 import models.VWUserStateSystem;
 
 public class UserHandler{
@@ -52,7 +53,8 @@ public class UserHandler{
       db.open();
       //1. Es repetido -> ERROR
       User s = User.findFirst("user = ? OR email = ?", user, email);
-      if (s == null){
+      if (s != null){
+        response.status(501);
         rpta = "repeated";
       }else{
         //No es repetido -> OK
@@ -63,19 +65,25 @@ public class UserHandler{
         n.set("email", email);
         n.set("user_state_id", 1);
         n.saveIt();
-        userId = (int) n.get("id"); 
+        userId = ((java.math.BigInteger)n.get("id")).intValue(); 
         //3. Crear asociación usuario sistema
-        UserState n2 = new UserState();
+        UserSystem n2 = new UserSystem();
         n2.set("user_id", userId);
         n2.set("system_id", systemId);
         n2.saveIt();
         //4. Crear key de activación y asociar
+        String activationKey = org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40);
         UserKey n3 = new UserKey();
         n3.set("user_id", userId);
-        n3.set("activation", org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(40));
+        n3.set("activation", activationKey);
         n3.saveIt();
+        JSONObject rptaTemp = new JSONObject();
+        rptaTemp.put("user_id", userId);
+        rptaTemp.put("activation_key", activationKey);
+        rpta = rptaTemp.toString();
       }
     }catch (Exception e) {
+      e.printStackTrace();
       String[] error = {"An error occurred while creating the user", e.toString()};
       JSONObject rptaTry = new JSONObject();
       rptaTry.put("tipo_mensaje", "error");
@@ -181,7 +189,7 @@ public class UserHandler{
     String rpta = "";
     Database db = new Database();
     try {
-      int userId = Integer.parseInt(request.queryParams("id"));
+      int userId = Integer.parseInt(request.params("id"));
       db.open();
       User s = User.findFirst("id = ?", userId);
       if (s == null){
