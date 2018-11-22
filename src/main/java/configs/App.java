@@ -48,6 +48,7 @@ public class App {
 		//-user
 		post("/user/create", UserHandler.create);
 		get("/user/get/:id", UserHandler.get);
+		get("/user/get_by_name_system_id", UserHandler.getByUserNameAndSystemId);
 		get("/user/get_id_by_user", UserHandler.getIdByUser);
 		post("/user/update_state", UserHandler.updateState);
 		post("/user/update_pass", UserHandler.updatePass);

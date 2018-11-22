@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import configs.Database;
 import models.User;
 import models.UserKey;
-import models.UserState;
 import models.UserSystem;
 import models.VWUserStateSystem;
 
@@ -63,7 +62,7 @@ public class UserHandler{
         n.set("user", user);
         n.set("pass", pass);
         n.set("email", email);
-        n.set("user_state_id", 1);
+        n.set("user_state_id", 6); // 6 = email_pending
         n.saveIt();
         userId = ((java.math.BigInteger)n.get("id")).intValue(); 
         //3. Crear asociación usuario sistema
@@ -244,6 +243,39 @@ public class UserHandler{
     return rpta;
   };
 
+  public static Route getByUserNameAndSystemId = (Request request, Response response) -> {
+    String rpta = "";
+    Database db = new Database();
+    try {
+      String userName = request.queryParams("user");
+      int systemId = Integer.parseInt(request.queryParams("syste_id"));
+      db.open();
+      VWUserStateSystem s = VWUserStateSystem.findFirst("user = ? AND system_id = ?", userName, systemId);
+      if (s == null){
+        rpta = "not_found";
+      }else{
+        JSONObject temp = new JSONObject();
+        temp.put("user", s.get("user"));
+        temp.put("email", s.get("email"));
+        temp.put("state_id", s.get("user_state_id"));
+        rpta = temp.toString();
+      }
+    }catch (Exception e) {
+      e.printStackTrace();
+      String[] error = {"An error occurred while getting the user", e.toString()};
+      JSONObject rptaTry = new JSONObject();
+      rptaTry.put("tipo_mensaje", "error");
+      rptaTry.put("mensaje", error);
+      rpta = rptaTry.toString();
+      response.status(500);
+    } finally {
+      if(db.getDb().hasConnection()){
+        db.close();
+      }
+    }
+    return rpta;
+  };
+
   public static Route update = (Request request, Response response) -> {
     String rpta = "";
     Database db = new Database();
@@ -261,6 +293,7 @@ public class UserHandler{
         s.saveIt();
       }
     }catch (Exception e) {
+      e.printStackTrace();
       String[] error = {"An error occurred while updating the user", e.toString()};
       JSONObject rptaTry = new JSONObject();
       rptaTry.put("tipo_mensaje", "error");
