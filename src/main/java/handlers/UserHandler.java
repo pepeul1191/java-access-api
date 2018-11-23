@@ -64,7 +64,7 @@ public class UserHandler{
         n.set("email", email);
         n.set("user_state_id", 6); // 6 = email_pending
         n.saveIt();
-        userId = ((java.math.BigInteger)n.get("id")).intValue(); 
+        userId = ((java.math.BigInteger)n.get("id")).intValue();
         //3. Crear asociación usuario sistema
         UserSystem n2 = new UserSystem();
         n2.set("user_id", userId);
@@ -248,7 +248,7 @@ public class UserHandler{
     Database db = new Database();
     try {
       String userName = request.queryParams("user");
-      int systemId = Integer.parseInt(request.queryParams("syste_id"));
+      int systemId = Integer.parseInt(request.queryParams("system_id"));
       db.open();
       VWUserStateSystem s = VWUserStateSystem.findFirst("user = ? AND system_id = ?", userName, systemId);
       if (s == null){
