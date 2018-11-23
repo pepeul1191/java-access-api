@@ -11,6 +11,7 @@ import configs.FilterHandler;
 import handlers.UserHandler;
 import handlers.UserStateHandler;
 import handlers.KeyHandler;
+import handlers.CorrelationHandler;
 
 public class App {
   public static void main(String args[]){
@@ -61,5 +62,7 @@ public class App {
 		post("/key/reset_by_email", KeyHandler.resetByEmail);
 		post("/key/activation/update_by_user_id", KeyHandler.activationUpdateByUserId);
 		post("/key/reset/update_by_user_id", KeyHandler.resetUpdateByUserId);
+    //-correlation
+    post("/correlation/generate", CorrelationHandler.generate);
   }
 }
