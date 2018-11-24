@@ -132,6 +132,10 @@ public class UserHandler{
     try {
       int userId = Integer.parseInt(request.queryParams("user_id"));
       int userStateId = Integer.parseInt(request.queryParams("user_state_id"));
+      System.out.println("1 +++++++++++++++++++++++++++++++++++++++++++++++++");
+      System.out.println(userId);
+      System.out.println(userStateId);
+      System.out.println("2 +++++++++++++++++++++++++++++++++++++++++++++++++");
       db.open();
       User s = User.findFirst("id = ?", userId);
       if (s == null){
@@ -171,6 +175,35 @@ public class UserHandler{
       }
     }catch (Exception e) {
       String[] error = {"An error occurred while updating the user password", e.toString()};
+      JSONObject rptaTry = new JSONObject();
+      rptaTry.put("tipo_mensaje", "error");
+      rptaTry.put("mensaje", error);
+      rpta = rptaTry.toString();
+      response.status(500);
+    } finally {
+      if(db.getDb().hasConnection()){
+        db.close();
+      }
+    }
+    return rpta;
+  };
+
+  public static Route updateEmail = (Request request, Response response) -> {
+    String rpta = "";
+    Database db = new Database();
+    try {
+      int userId = Integer.parseInt(request.queryParams("user_id"));
+      String email = request.queryParams("email");
+      db.open();
+      User s = User.findFirst("id = ?", userId);
+      if (s == null){
+        rpta = "not_found";
+      }else{
+        s.set("email", email);
+        s.saveIt();
+      }
+    }catch (Exception e) {
+      String[] error = {"An error occurred while updating the user email", e.toString()};
       JSONObject rptaTry = new JSONObject();
       rptaTry.put("tipo_mensaje", "error");
       rptaTry.put("mensaje", error);
@@ -255,7 +288,7 @@ public class UserHandler{
         rpta = "not_found";
       }else{
         JSONObject temp = new JSONObject();
-        temp.put("id", s.get("id"));
+        temp.put("id", s.get("user_id"));
         temp.put("user", s.get("user"));
         temp.put("email", s.get("email"));
         temp.put("state_id", s.get("user_state_id"));

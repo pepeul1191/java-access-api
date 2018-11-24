@@ -53,6 +53,7 @@ public class App {
 		get("/user/get_id_by_user", UserHandler.getIdByUser);
 		post("/user/update_state", UserHandler.updateState);
 		post("/user/update_pass", UserHandler.updatePass);
+    post("/user/update_email", UserHandler.updateEmail);
 		post("/user/delete/:id", UserHandler.delete);
 		post("/user/system/validate", UserHandler.userPassSystemValidate);
 		post("/user/update", UserHandler.update);
