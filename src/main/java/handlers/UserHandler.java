@@ -255,6 +255,7 @@ public class UserHandler{
         rpta = "not_found";
       }else{
         JSONObject temp = new JSONObject();
+        temp.put("id", s.get("id"));
         temp.put("user", s.get("user"));
         temp.put("email", s.get("email"));
         temp.put("state_id", s.get("user_state_id"));
