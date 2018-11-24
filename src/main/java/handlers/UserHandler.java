@@ -195,12 +195,23 @@ public class UserHandler{
       int userId = Integer.parseInt(request.queryParams("user_id"));
       String email = request.queryParams("email");
       db.open();
-      User s = User.findFirst("id = ?", userId);
-      if (s == null){
-        rpta = "not_found";
+      //validate if other user have the new email
+      User e = User.findFirst("id != ? AND email = ?", userId, email);
+      if(e == null){ // if no other user have the email => update
+        User s = User.findFirst("id = ?", userId);
+        if (s == null){
+          rpta = "not_found";
+        }else{
+          s.set("email", email);
+          s.saveIt();
+        }
       }else{
-        s.set("email", email);
-        s.saveIt();
+        String[] error = {"Email all ready used", e.toString()};
+        JSONObject rptaTry = new JSONObject();
+        rptaTry.put("tipo_mensaje", "error");
+        rptaTry.put("mensaje", error);
+        rpta = rptaTry.toString();
+        response.status(501);
       }
     }catch (Exception e) {
       String[] error = {"An error occurred while updating the user email", e.toString()};
