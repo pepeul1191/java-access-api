@@ -132,10 +132,6 @@ public class UserHandler{
     try {
       int userId = Integer.parseInt(request.queryParams("user_id"));
       int userStateId = Integer.parseInt(request.queryParams("user_state_id"));
-      System.out.println("1 +++++++++++++++++++++++++++++++++++++++++++++++++");
-      System.out.println(userId);
-      System.out.println(userStateId);
-      System.out.println("2 +++++++++++++++++++++++++++++++++++++++++++++++++");
       db.open();
       User s = User.findFirst("id = ?", userId);
       if (s == null){

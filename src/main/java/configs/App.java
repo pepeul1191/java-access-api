@@ -63,6 +63,7 @@ public class App {
 		post("/key/reset_by_email", KeyHandler.resetByEmail);
 		post("/key/activation/update_by_user_id", KeyHandler.activationUpdateByUserId);
 		post("/key/reset/update_by_user_id", KeyHandler.resetUpdateByUserId);
+    get("/key/activation/:user_id", KeyHandler.activationKeyGet);
     //-correlation
     post("/correlation/generate", CorrelationHandler.generate);
   }

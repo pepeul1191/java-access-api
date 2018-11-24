@@ -166,4 +166,31 @@ public class KeyHandler{
     }
     return rpta;
   };
+
+  public static Route activationKeyGet = (Request request, Response response) -> {
+    String rpta = "";
+    Database db = new Database();
+    try {
+      String userId = request.params("user_id");
+      db.open();
+      UserKey s = UserKey.findFirst("user_id = ?", userId);
+      if (s == null){
+        rpta = "not_found";
+      }else{
+        rpta = (String) s.get("activation");
+      }
+    }catch (Exception e) {
+      String[] error = {"It was not possible to get the activation user key", e.toString()};
+      JSONObject rptaTry = new JSONObject();
+      rptaTry.put("tipo_mensaje", "error");
+      rptaTry.put("mensaje", error);
+      rpta = rptaTry.toString();
+      response.status(500);
+    } finally {
+      if(db.getDb().hasConnection()){
+        db.close();
+      }
+    }
+    return rpta;
+  };
 }
